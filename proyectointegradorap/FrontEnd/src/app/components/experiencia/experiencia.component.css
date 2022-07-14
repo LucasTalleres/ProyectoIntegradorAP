@@ -1,13 +1,20 @@
 .row{
+    background-color: #05173b;
     padding: 20px;
     margin: 0px;
-}
-
-div{
-    background-color: #05173b;
     color: white;
 }
 
 h1, h3{
     display: inline;
+}
+
+.informacion{
+    display: flex;
+    justify-content: flex-end;
+}
+.modal-body {
+    position: relative;
+    flex: 1 1 auto;
+    padding: 1rem;
 }

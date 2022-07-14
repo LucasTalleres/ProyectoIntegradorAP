@@ -1,14 +1,305 @@
 <div class="row">
-    <h1>Proyectos Realizados</h1>
-    <div class="contenedor">
-        <div class="col-sm-12 col-md-7 col-lg-7
-        parte1">
-            <h1>Portfolio Argentina Programa</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla deserunt soluta neque. Culpa ullam quas quos tempora iure natus aut, omnis voluptas soluta nulla tempore dolorum unde voluptates, totam pariatur!</p>
-        </div>
-        <div class="col-sm-12 col-md-7 col-lg-7
-        parte2">
-
+    <div>
+        <div class="text-center">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProyectosModal" (click)="onOpenModal('add')" *ngIf="isLogged">
+                <a class="nav-link" style="color: #fff">
+                    Añadir Proyecto <span class="sr-only">(current)</span>
+                </a>
+            </button>
         </div>
     </div>
+    <h1>Proyectos Realizados</h1>
+    <div class="col-lg-1" ></div>
+        <div class="col-lg-11">
+            <ul *ngFor="let proyecto of proyectos">
+                <div class="informacion">
+                    <a
+                        (click)="onOpenModal('edit',proyecto)"
+                        type="button"
+                        class="btn btn-success tooltips"
+                        data-placement="top"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editProyectosModal"
+                        data-original-title="edit"
+                        *ngIf="isLogged"><i class="fa fa-pencil"></i>
+                        </a>
+                    <a
+                    (click)="onOpenModal('delete',proyecto)"
+                        type="button"
+                        class="btn btn-danger tooltips"
+                        data-placement="top"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteProyectosModal"              
+                        data-original-title="delete"
+                        *ngIf="isLogged"><i class="fa fa-times"></i> 
+                    </a>
+                </div>
+                <li><h1>{{proyecto.nombreProyecto}} </h1>  <h3>{{proyecto.fechaProyecto}}</h3></li>
+                <p>{{proyecto.descProyecto}}</p>
+            </ul>
+    </div>
 </div>
+
+<!-- Modal añadir educacion -->
+
+<div 
+    class="modal fade" 
+    id="addProyectosModal" 
+    tabindex="-1"
+    role="dialog" 
+    aria_labelledby="addProyectosModalLabel" 
+    aria-hidden="true"
+    >
+
+    <div class="modal-dialog" role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="addProyectosModalLabel"> Añadir un proyecto</h5>
+                <button
+                type="button"
+                class="btn-close-white"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <form #addForm="ngForm"(ngSubmit)="onAddProyectos(addForm)">
+                    <div class="form-group">
+                        <label for="nombreProyecto">Nombre del proyecto realizado</label>
+                        <input type="text"
+                        ngModel
+                        name="nombreProyecto"
+                        class="form-control"
+                        id="nombreProyecto"
+                        placeholder="Nombre"
+                        required
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaProyecto">Año de realizacion</label>
+                        <input type="text"
+                        ngModel
+                        name="fechaProyecto"
+                        class="form-control"
+                        id="fechaProyecto"
+                        placeholder="Año"
+                        required
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="descProyecto">Descripcion del proyecto realizado</label>
+                        <input type="text"
+                        ngModel
+                        name="descProyecto"
+                        class="form-control"
+                        id="descProyecto"
+                        placeholder="Descripcion"
+                        required
+                        >
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-toggle="modal"
+                        >
+                        Cerrar
+                        </button>
+                        <button
+                        [disabled]="addForm.invalid"
+                        type="submit"
+                        class="btn btn-primary"
+                        >
+                        Añadir cambios
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Modal editar educacion -->
+
+<div
+    class="modal fade"
+    id="editProyectosModal"
+    tabindex="-1"
+    role="dialog"
+    aria_labelledby="editProyectosLabel"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog" role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5  class="modal-title" id="editProyectosLabel">
+                    Editar el siguiente proyecto: {{editarProyectos?.nombreProyecto}}
+                </h5>
+                <button
+                type="button"
+                class="btn-close-white"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                >
+                <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <form #editForm="ngForm">
+
+                    <div class="form-group">
+                        <label for="nombreProyecto">Proyecto realizado</label>
+                        <input type="text"
+                        ngModel="{{ editarProyectos?.nombreProyecto }}"
+                        name="nombreProyecto"
+                        class="form-control"
+                        id="nombreProyecto"
+                        aria-describedby="emailHelp"
+                        placeholder="Nombre"
+                        />
+                    </div>
+                    <input 
+                        type="hidden"
+                        ngModel="{{ editarProyectos?.idProyecto }}"
+                        name="idProyecto"
+                        class="form-control"
+                        id="idProyecto"
+                        placeholder=""
+                    />
+                    <div class="form-group">
+                        <label for="text">Año de realizacion</label>
+                        <input type="text"
+                        ngModel="{{ editarProyectos?.fechaProyecto }}"
+                        name="fechaProyecto"
+                        class="form-control"
+                        id="fechaProyecto"
+                        aria-describedby="emailHelp"
+                        placeholder="Año"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="descEdu">Descripcion del Proyecto</label>
+                        <input type="text"
+                        ngModel="{{ editarProyectos?.descProyecto }}"
+                        name="descProyecto"
+                        class="form-control"
+                        id="descProyecto"
+                        aria-describedby="emailHelp"
+                        placeholder="Descripcion"
+                        >
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                        type="button"
+                        id=""
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                        >
+                        Cerrar
+                        </button>
+                        <button
+                        (click)="onUpdateProyectos(editForm.value)"
+                        data-bs-dismiss="modal"
+                        class="btn btn-primary"
+                        >
+                        Guardar cambios
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Modal borrar educacion -->
+
+<div 
+    class="modal fade"
+    id="deleteProyectosModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="deleteProyectosLabel"
+    aria-hidden="true"
+>
+    <div class="modal-dialog" role="document">
+
+        <div class="modal-content">
+
+            <div class="modal-header" >
+
+                <h5 class="modal-title" id="deleteProyectosLabel">Borrar proyecto</h5>
+                <button
+                type="button"
+                class="btn-close-white"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                >
+                <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <p>
+                    Estás seguro que deseas borrar el siguiente proyecto?: 
+                    {{borrarProyectos?.nombreProyecto}}?
+                  </p>
+
+                <div class="modal-footer">
+                    <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    >
+                        No
+                    </button>
+                    <button
+                    (click)="onDeleteProyectos(borrarProyectos!.idProyecto)"
+                    class="btn btn-danger"
+                    data-bs-dismiss="modal"
+                    >
+                        Si
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Notificacion para cuando no hay mas educaciones -->
+<div *ngIf="proyectos?.length === 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-xl-12">
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">SIN PROYECTOS!</h4>
+            <p>No se encontraron proyectos en la base de datos.</p>
+    </div>
+</div>
+

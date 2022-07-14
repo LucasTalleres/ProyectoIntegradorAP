@@ -4,10 +4,15 @@
     margin: 0px;
     color: white;
 }
-.contenedor{
-    width: auto;
+h1, h3{
+    display: inline;
 }
-.parte1, .parte2{
-    display: inline-block;
-    text-align: justify;
+.informacion{
+    display: flex;
+    justify-content: flex-end;
+}
+.modal-body {
+    position: relative;
+    flex: 1 1 auto;
+    padding: 1rem;
 }

@@ -1,0 +1,11 @@
+.gradient-custom {
+    background: #6a11cb;
+
+    background: -webkit-linear-gradient(to right, rgb(3, 4, 48), rgb(10, 16, 102));
+    
+    background: linear-gradient(to right, rgb(3, 4, 48), rgb(10, 16, 102))
+}
+
+.p-5{
+    padding: 2rem !important;
+}
